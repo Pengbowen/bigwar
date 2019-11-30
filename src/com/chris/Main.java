@@ -20,7 +20,7 @@ public class Main {
                 public void run() {
                     mainPanel.repaint();
                 }
-            },100,1);
+            },100,10);
             mainFrame.add(mainPanel);
             mainFrame.setVisible(true);
 
