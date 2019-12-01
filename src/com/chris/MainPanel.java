@@ -3,21 +3,20 @@ package com.chris;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
+import java.util.List;
 
 public class MainPanel extends JPanel {
 
     Sky sky = new Sky();
     Hero hero = new Hero();
     Map<String,Bullet> bulletMap = new HashMap<>();
-    //计数器
+    List<SEnemy> sEnemyList = Collections.synchronizedList(new ArrayList<SEnemy>());
+    //子弹计数器
     long count = 0;
     int period = 20;
+    //敌机
 
     public MainPanel() {
         this.setBounds(0,0,450,852);
@@ -42,7 +41,7 @@ public class MainPanel extends JPanel {
         hero.paintObject(g);
         //当计数器满足条件，创建一个新的子弹
         if(count++ % period == 0 ){
-            Bullet bullet = new Bullet(UUID.randomUUID().toString(),hero.getX()+49,hero.getY());
+            Bullet bullet = new Bullet(UUID.randomUUID().toString(),hero.getX()+45,hero.getY()-8);
             bulletMap.put(bullet.getId(),bullet);
         }
         Iterator<Map.Entry<String, Bullet>> iterator = bulletMap.entrySet().iterator();
