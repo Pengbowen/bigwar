@@ -9,14 +9,19 @@ import java.util.List;
 
 public class MainPanel extends JPanel {
 
+    private EnemyFactory factory = new EnemyFactory();
+
     Sky sky = new Sky();
     Hero hero = new Hero();
     Map<String,Bullet> bulletMap = new HashMap<>();
-    List<SEnemy> sEnemyList = Collections.synchronizedList(new ArrayList<SEnemy>());
-    //子弹计数器
+    List<Enemy> enemyList = Collections.synchronizedList(new ArrayList<>());
+    //计数器
     long count = 0;
-    int period = 20;
-    //敌机
+    //子弹发射间隔
+    int bulletPeriod = 20;
+    //敌机产生间隔
+    int enemyPeriod = 80;
+
 
     public MainPanel() {
         this.setBounds(0,0,450,852);
@@ -40,20 +45,51 @@ public class MainPanel extends JPanel {
         sky.paintObject(g);
         hero.paintObject(g);
         //当计数器满足条件，创建一个新的子弹
-        if(count++ % period == 0 ){
+        if(count % bulletPeriod == 0 ){
             Bullet bullet = new Bullet(UUID.randomUUID().toString(),hero.getX()+45,hero.getY()-8);
             bulletMap.put(bullet.getId(),bullet);
         }
+
         Iterator<Map.Entry<String, Bullet>> iterator = bulletMap.entrySet().iterator();
         while(iterator.hasNext()){
             Map.Entry<String, Bullet> next = iterator.next();
             Bullet bullet = next.getValue();
             if (bullet.getY() < -10){
                 iterator.remove();
-                System.out.println("容器大小："+bulletMap.size());
             }else{
                 bullet.paintObject(g);
             }
         }
+
+        if (count % enemyPeriod == 0){
+
+            Enemy enemy = factory.newEnemy();
+            enemyList.add(enemy);
+        }
+
+        Iterator<Enemy> enemyIterator = enemyList.iterator();
+
+        while (enemyIterator.hasNext()){
+            Enemy next = enemyIterator.next();
+
+            Iterator<Map.Entry<String, Bullet>> bulletIterator = bulletMap.entrySet().iterator();
+            while (bulletIterator.hasNext()){
+                Bullet bullet = bulletIterator.next().getValue();
+                int bx  = bullet.getX();
+                int by = bullet.getY();
+                int ex = next.getX();
+                int ey = next.getY();
+                //碰撞
+                if (bx>=ex && bx <= ex+next.getWidth() && by >= ey && by<= ey+next.getHeight()){
+                    next.hit();
+                    bulletIterator.remove();
+                }
+            }
+            if (next.status >= 25){
+                enemyIterator.remove();
+            }
+            next.paintObject(g);
+        }
+        count++;
     }
 }

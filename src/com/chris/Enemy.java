@@ -1,14 +1,25 @@
 package com.chris;
 
-public abstract class Enemy {
-    private int x;
+public abstract class Enemy implements Fly{
+    protected int x;
 
-    private int y;
+    protected int y;
 
-    private int blood;
+    protected int blood;
 
-    private int status;
+    protected int status = 0;
 
+    protected  int width;
+
+    protected  int height;
+
+
+    public void hit(){
+        if (blood == 0){
+            return;
+        }
+        this.blood--;
+    }
 
     public int getX() {
         return x;
@@ -40,5 +51,21 @@ public abstract class Enemy {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
     }
 }

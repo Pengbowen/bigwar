@@ -3,13 +3,7 @@ package com.chris;
 import javax.swing.*;
 import java.awt.*;
 
-public class SEnemy implements Fly {
-
-    private int x;
-
-    private int y;
-
-    private int status = 0;
+public class SEnemy extends Enemy {
 
     private static final int DEAD_STATUS = 5;
 
@@ -22,35 +16,30 @@ public class SEnemy implements Fly {
 
     private static  ImageIcon[] imageIcons = new ImageIcon[]{imageIcon,imageIcon1,imageIcon2,imageIcon3,imageIcon4};
 
+    public SEnemy(int x,int y) {
+        this.x = x;
+        this.y = y;
+        this.blood = 2;
+        this.width = 49;
+        this.height = 36;
+    }
 
     @Override
     public void paintObject(Graphics g) {
-        if (status != DEAD_STATUS){
-            g.drawImage(SEnemy.imageIcons[status].getImage(),x,y,null);
+
+        if (blood == 0){
+            g.drawImage(SEnemy.imageIcons[++status/6].getImage(),x,y++,null);
+        }else {
+            g.drawImage(SEnemy.imageIcons[status].getImage(),x,y++,null);
         }
     }
-
-    public int getX() {
-        return x;
-    }
-
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public void setY(int y) {
-        this.y = y;
-    }
-
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
+    @Override
+    public String toString() {
+        return "LEnemy{" +
+                "x=" + x +
+                ", y=" + y +
+                ", blood=" + blood +
+                ", status=" + status +
+                '}';
     }
 }
