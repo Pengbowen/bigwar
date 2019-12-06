@@ -8,6 +8,8 @@ public class LEnemy extends Enemy {
     private static final int DEAD_STATUS = 5;
 
 
+
+
     private static ImageIcon imageIcon = new ImageIcon("src/imgs/enemy.png");
     private static ImageIcon imageIcon1 = new ImageIcon("src/imgs/enemy1.png");
     private static ImageIcon imageIcon2 = new ImageIcon("src/imgs/enemy2.png");
@@ -22,6 +24,7 @@ public class LEnemy extends Enemy {
         this.blood = 6;
         this.width = 69;
         this.height = 99;
+        this.score = 10;
     }
 
     @Override

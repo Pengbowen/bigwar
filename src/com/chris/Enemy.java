@@ -13,9 +13,12 @@ public abstract class Enemy implements Fly{
 
     protected  int height;
 
+    protected  int score;
+
 
     public void hit(){
         if (blood == 0){
+            MainPanel.score +=this.getScore();
             return;
         }
         this.blood--;
@@ -67,5 +70,13 @@ public abstract class Enemy implements Fly{
 
     public void setHeight(int height) {
         this.height = height;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
     }
 }

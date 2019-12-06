@@ -3,6 +3,7 @@ package com.chris;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.*;
 import java.util.List;
@@ -10,6 +11,10 @@ import java.util.List;
 public class MainPanel extends JPanel {
 
     private EnemyFactory factory = new EnemyFactory();
+
+    public static int score = 0;
+
+    public  Status status = Status.START;
 
     Sky sky = new Sky();
     Hero hero = new Hero();
@@ -37,12 +42,46 @@ public class MainPanel extends JPanel {
                 hero.move(x,y);
             }
         });
+        this.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                status = Status.START;
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                status = Status.PAUSE;
+            }
+        });
     }
 
 
     @Override
     public void paint(Graphics g) {
         sky.paintObject(g);
+
+        switch (status){
+            case START:
+                g.drawImage(new ImageIcon("src/imgs/start.png").getImage(),0,0,null);
+                break;
+
+        }
+
         hero.paintObject(g);
         //当计数器满足条件，创建一个新的子弹
         if(count % bulletPeriod == 0 ){
@@ -66,9 +105,7 @@ public class MainPanel extends JPanel {
             Enemy enemy = factory.newEnemy();
             enemyList.add(enemy);
         }
-
         Iterator<Enemy> enemyIterator = enemyList.iterator();
-
         while (enemyIterator.hasNext()){
             Enemy next = enemyIterator.next();
 
@@ -91,5 +128,6 @@ public class MainPanel extends JPanel {
             next.paintObject(g);
         }
         count++;
+        g.drawString("SCORE:"+score,20,20);
     }
 }

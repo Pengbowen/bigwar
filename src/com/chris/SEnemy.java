@@ -22,6 +22,7 @@ public class SEnemy extends Enemy {
         this.blood = 2;
         this.width = 49;
         this.height = 36;
+        this.score = 5;
     }
 
     @Override
