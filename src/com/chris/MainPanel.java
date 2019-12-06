@@ -45,7 +45,11 @@ public class MainPanel extends JPanel {
         this.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-
+                if (status == Status.RUNNING){
+                    status = Status.PAUSE;
+                }else{
+                    status = Status.RUNNING;
+                }
             }
 
             @Override
@@ -57,15 +61,19 @@ public class MainPanel extends JPanel {
             public void mouseReleased(MouseEvent e) {
 
             }
-
             @Override
             public void mouseEntered(MouseEvent e) {
-                status = Status.START;
+                if (status == Status.PAUSE){
+                    status = Status.RUNNING;
+                }
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                status = Status.PAUSE;
+                if(status == Status.RUNNING){
+                    status = Status.PAUSE;
+                }
+
             }
         });
     }
@@ -73,22 +81,29 @@ public class MainPanel extends JPanel {
 
     @Override
     public void paint(Graphics g) {
-        sky.paintObject(g);
 
         switch (status){
             case START:
-                g.drawImage(new ImageIcon("src/imgs/start.png").getImage(),0,0,null);
+                g.drawImage(new ImageIcon("src/imgs/start.png").getImage(),20,0,null);
                 break;
-
+            case RUNNING:
+                run(g);
+                break;
+            case PAUSE:
+                g.drawImage(new ImageIcon("src/imgs/pause.png").getImage(),35,50,null);
+                break;
         }
 
+    }
+
+    void run(Graphics g){
+        sky.paintObject(g);
         hero.paintObject(g);
         //当计数器满足条件，创建一个新的子弹
         if(count % bulletPeriod == 0 ){
             Bullet bullet = new Bullet(UUID.randomUUID().toString(),hero.getX()+45,hero.getY()-8);
             bulletMap.put(bullet.getId(),bullet);
         }
-
         Iterator<Map.Entry<String, Bullet>> iterator = bulletMap.entrySet().iterator();
         while(iterator.hasNext()){
             Map.Entry<String, Bullet> next = iterator.next();
@@ -99,7 +114,6 @@ public class MainPanel extends JPanel {
                 bullet.paintObject(g);
             }
         }
-
         if (count % enemyPeriod == 0){
 
             Enemy enemy = factory.newEnemy();
